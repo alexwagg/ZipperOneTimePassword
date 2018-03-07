@@ -1,0 +1,40 @@
+{
+  "name": "onetimepassword",
+  "version": "1.0.0",
+  "description": "Lightweight One Time Password (OTP) javascript generator and solidity (ethereum) verifier",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://alexwagg@github.com/alexwagg/ZipperOneTimePassword"
+  },
+  "keywords": [
+    "ethereum",
+    "solidity",
+    "web3",
+    "zipper",
+    "global",
+    "zipperglobal",
+    "one",
+    "time",
+    "password",
+    "otp",
+    "ether",
+    "eth"
+  ],
+  "author": "Zipper Global",
+  "license": "MIT",
+  "dependencies": {
+    "npm": "^5.7.1"
+  },
+  "devDependencies": {
+    "ethereumjs-testrpc": "^6.0.3",
+    "solidity-coverage": "^0.4.11",
+    "truffle": "^4.1.0"
+  }
+}
