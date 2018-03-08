@@ -18,11 +18,29 @@ contract OTP{
 		uint256 rootLength;
 	}
 
+	event OTPVerificationSuccessful(bool success);
+
 	mapping(address => OTPConfig) userOTPMapping;
 
 	// empty constructor
 	function OTP() public {
 	}
+
+	///////////////////////////
+	// view functions
+	///////////////////////////
+
+	function getCurrentRoot(address user) view public returns(bytes32 currentRoot){
+		return userOTPMapping[user].currentRoot;
+	}
+
+	function getCurrentRootLength(address user) view public returns(uint256 currentRootLength){
+		return userOTPMapping[user].rootLength;
+	}
+
+	///////////////////////////
+	// OTP Functionality
+	///////////////////////////
 
 	// initialize an OTP if nothing has been set up yet
 	function OTPInit_NEW(bytes32 OTPRoot, uint256 rootLength) public {
@@ -48,23 +66,29 @@ contract OTP{
 			// set the OTP to this verified new root, and subtract the length by 1
 			OTPInit(verifyOTPRoot, currentRootLength - 1);
 
+			// raise an event and return true
+			OTPVerificationSuccessful(true);
 			return true;
 		}
 		// this can be triggered if the OTP verification is incorrect
 		// or if the root is too short, in this case the user must call the below function
+		OTPVerificationSuccessful(false);
 		return false;
 	}
 
 	// verify an OTP, and set up another OTP
-	function OTPVerify(bytes verifyOTPRoot, bytes32 newOTPRoot, uint256 newRootLength) public returns(bool success){
+	function OTPVerify_NEW(bytes verifyOTPRoot, bytes32 newOTPRoot, uint256 newRootLength) public returns(bool success){
 		if (keccak256(verifyOTPRoot) == userOTPMapping[msg.sender].currentRoot && newRootLength > 1 && newOTPRoot != 0x0 ){
 			// set the OTP to the new OTP as specified by the user
 			OTPInit(newOTPRoot, newRootLength);
 
+			// raise an event and return true
+			OTPVerificationSuccessful(true);
 			return true;
 		}
 		// this can be triggered if the OTP verification is incorrect
 		// or if the basic checks failed on the new OTP config
+		OTPVerificationSuccessful(false);
 		return false;
 	}
 

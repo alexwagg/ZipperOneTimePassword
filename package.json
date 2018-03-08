@@ -35,6 +35,7 @@
   "devDependencies": {
     "ethereumjs-testrpc": "^6.0.3",
     "solidity-coverage": "^0.4.11",
-    "truffle": "^4.1.0"
+    "truffle": "^4.1.0",
+    "web3": "^1.0.0-beta.30"
   }
 }
