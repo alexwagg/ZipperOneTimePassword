@@ -118,7 +118,6 @@ contract("Test OTP Verifier", (accounts) => {
 			OTPChain.push(OTPRoot.valueOf());
 		}
 
-
 		// now use the function OTPVerify_NEW() to submit this new OTPRoot & length
 		successfulAuth = (await OTP.OTPVerify_NEW(lastValidOTP, OTPChain[10], 10, {from: accounts[0]})).logs[0].args.success;
 		
@@ -134,5 +133,16 @@ contract("Test OTP Verifier", (accounts) => {
 			assert(await OTP.getCurrentRoot(accounts[0]) === OTPChain[i], "OTPRoot did set on the " + i.toString() + "th round");
 			assert((await OTP.getCurrentRootLength(accounts[0])).toString() === i.toString(), "OTPLength did not set on the " + i.toString() + "th round");
 		}
-	})
+	});
+
+	it("shouldn't allow a user to overwrite the OTP if he already has one established", async () => {
+		try{
+			// try and init the OTP chain with some random hash and number
+			await OTP.OTPInit_NEW(web3.utils.sha3('random hash'), 7, {from: accounts[0]});
+			assert(false, "user was allowed to overwrite OTP!");
+		}
+		catch(error){
+			assert(error.message == 'VM Exception while processing transaction: revert', "incorrect error type...");
+		}
+	});
 })
